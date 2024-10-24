@@ -1,0 +1,83 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+}
+
+header {
+    background: #000000;
+    color: white;
+    padding: 3px;
+    text-align: center;
+    height: 16%;
+}
+#title_head{
+    padding-top: 3px;
+    padding-bottom: 2px;
+}
+.def_navbar{
+    /* border: 2px solid red; */
+    padding: 7px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin-left: 29px;
+    margin-right:29px;
+    font-size: larger;
+    font-weight: 1000;
+    background-color: rgba(253, 183, 54, 0.81);
+    border-radius: 5px;
+    border-bottom-left-radius: 0px ;
+    border-bottom-right-radius: 0px ;
+}
+.def_navbar:hover{
+    background-color: rgba(255, 174, 24, 0.875);
+}
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 23px;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.page {
+    height: 97%;
+    width: 100%;
+}
+
+main{
+    height: 82%;
+    width: 100%;
+}
+#uploadPdfBtn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 36px;
+    width: 63px;
+    padding: 10px;
+    border-radius: 50%;
+    background-color: orange;
+    color: white;
+    border: none;
+    cursor: pointer;
+    z-index: 1000; 
+    margin-top: 43%;
+    display: none;
+}
+#pdfUploadForm {
+    margin-top: 20px;
+}

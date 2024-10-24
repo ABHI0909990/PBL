@@ -1,0 +1,129 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('bg_image.jpg.webp') no-repeat center center;
+    background-size: cover;
+    color: #fff;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    backdrop-filter: blur(8px); 
+    z-index: 1;
+}
+
+header {
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    z-index: 2;
+}
+
+.heading {
+    color: #ff9900; 
+    font-size: 2.5em;
+    margin: 0;
+}
+
+.landingpage {
+    text-align: center;
+    padding: 80px 0;
+}
+
+.login_signin_container {
+    background-color: rgba(0, 0, 0, 0.85);
+    border-radius: 10px;
+    margin: 20px auto;
+    padding: 20px;
+    width: 400px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    margin-bottom: 10%;
+    margin-left: 36%;
+}
+
+.text_button_container {
+    padding: 10px 0;
+}
+
+.text {
+    margin-bottom: 10px;
+}
+
+.btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.signin, .login {
+    width: 50%;
+    padding: 10px;
+    background-color: #ff7f50;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #1c1c1c;
+    transition: background 0.3s;
+}
+
+.signin:hover, .login:hover {
+    background-color: #e66a47; 
+}
+
+.form-container {
+    margin-top: 20px;
+}
+
+.login-box, .signin-box {
+    margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 94%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+}
+
+input::placeholder {
+    color: #aaa;
+}
+
+button.clkbtn {
+    width: 100%;
+    background-color: #ff7f50; 
+    border: none;
+    padding: 15px;
+    font-size: 1em;
+    font-weight: bold;
+    color: #333;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+
+button.clkbtn:hover {
+    background-color: #e66a47; 
+}
+
+.slider {
+    height: 3px;
+    background: #ff7f50; 
+    position: absolute;
+    bottom: 10px;
+    transition: left 0.3s ease;
+}
+
+h3{
+    text-align: center;
+}

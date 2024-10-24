@@ -1,0 +1,328 @@
+*{
+    margin: 0px;
+    padding: 0px;;
+}
+header{
+    height: 15vh;
+    width: 100vw;
+    text-align: center;
+    background: #333;
+}
+header h1{
+    text-decoration: underline;
+    font-weight: bolder;
+    color: rgb(255, 255, 255);
+}
+nav{
+    display: flex;
+    flex-direction: row;
+    height: 6vh;
+    width: 100%;
+    border-right: 2px solid black;
+}
+nav ul{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row; 
+    height: 100%;
+    width: 95%;
+    padding-left: 50px;
+    font-size: 15px;
+}
+nav ul li{
+    height: 30px;
+    width: 100px;
+    list-style: none;
+    text-align: center;
+    padding: 1px;
+    margin: 10px;
+    transition: all 0.5s ease-in-out;
+    
+}
+nav ul li button{
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-weight: bolder;
+    font-size: 15px;
+    color: white;
+    &:hover{
+        text-decoration: underline;
+    }
+}
+hr{
+    left: 7%;
+    width: 86%;
+}
+
+main{
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    height: 78vh;
+}
+.More{
+    display: none;
+    &:target{
+        display: block;
+    }
+}
+main article{
+    display: none;
+    width: 100%;
+    height: 100%;
+    &:target{
+        display: block;
+    }
+}
+.display_div{
+	display: inline-block;
+	width: 100%;
+	margin: 10px 0px;
+}
+.display_div button{
+	border: 0.5px solid black;
+	border-radius: 15px;
+	cursor: pointer;
+	height: 135px;
+	width: 100%;
+	background: #82828296;
+}
+.display_div button h1{
+	margin: -11px 24px;
+	font-size: 28px;
+	text-align: start;
+}
+.display_div button p{
+	margin: 19px 25px;
+	font-size: 14px;
+	text-align: start;
+}
+
+.create_join_button{
+    z-index: 2;
+    position: fixed;
+    left: 92%;
+    top: 82%;
+    height: 45px;
+    width: 45px;
+    background: #ffffff;
+    border-radius: 45px;
+    border: none;
+    box-shadow: 2px 2px 10px black;
+    font-size: 31px;
+    color: orange;
+    &:hover{
+        background: #e4e4e4d6;
+    }
+}
+.rotated_create_join_button{
+    z-index: 2;
+    transform: rotate(45deg);
+    position: fixed;
+    left: 92%;
+    top: 82%;
+    height: 45px;
+    width: 45px;
+    background: #ffffff;
+    border-radius: 45px;
+    border: none;
+    box-shadow: 2px 2px 10px black;
+    font-size: 31px;
+    color: orange;
+    cursor: pointer;
+    &:hover{
+        background: #e4e4e4d6;
+    }
+}
+
+
+.create_join_display{
+    display: none;
+    
+}
+.show_create_join_buttons{
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    position: fixed;
+    top: 85%;
+    width: 100%;
+	background-color: rgb(255, 255, 255);
+	border: none;
+	animation: slide-up 1s forwards;
+}
+@keyframes slide-up{
+    0%{
+        transform: translateY(50px);
+    }
+    100%{
+        transform: translateY(0);
+    }
+}
+.show_create_join_buttons button{
+    width: 100%;
+    height: 30px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bolder;
+    border: none;
+    cursor: pointer;
+    &:hover{
+        text-decoration: underline;
+    }
+}
+.Create_Group_Button_Home{
+    background: linear-gradient(to right,
+    rgb(255, 195, 110),
+    rgb(255, 146, 91));
+    color: rgb(231, 231, 231);
+    cursor: pointer;
+}
+.Join_Group_Button_Home{
+    background: rgb(231, 231, 231);
+    color: rgb(240, 136, 9);
+    cursor: pointer;
+}
+
+
+.Create_Group{
+    display: none;
+    height: 47%;
+    width: 100%;
+    background: #ffffff00;
+}
+.Create_Group form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid transparent;
+    border-radius: 30px;
+    height: 100%;
+    width: 26%;
+    background: #efefefbf;
+    box-shadow: 0px 0px 15px #686868;
+}
+.Create_Group form input{
+    margin-bottom: 20px;
+    height: 40px;
+    width: 300px;
+    border: none;
+    border-bottom: 1px solid black;
+    font-size: 15px;
+    background: transparent;
+    &::placeholder{
+        font-size: 15px;
+    }
+}
+
+.Create_form_display{
+	display: flex;
+    position: fixed;
+    top: 37%;
+    align-items: center;
+    justify-content: center;
+    animation: slide-up_create_form 1.7s forwards;
+}
+
+@keyframes slide-up_create_form{
+    0%{
+        transform: translateY(300px);
+    }
+    100%{
+        transform: translateY(0);
+    }
+}
+.Join_Group {
+    display: none;
+    height: 47%;
+    width: 100%;
+    background: #ffffff00;
+}
+.Join_Group form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid transparent;
+    border-radius: 30px;
+    height: 100%;
+    width: 26%;
+    background: #efefefbf;
+    box-shadow: 0px 0px 15px #686868;
+}
+.Join_Group form input{
+    margin-bottom: 20px;
+    height: 40px;
+    width: 300px;
+    border: none;
+    border-bottom: 1px solid black;
+    font-size: 15px;
+    background: transparent;
+    &::placeholder{
+        font-size: 15px;
+    }
+}
+
+.Join_form_display{
+    display: flex;
+    position: fixed;
+    top: 37%;
+    align-items: center;
+    justify-content: center;
+    animation: slide-up_join_form 1.7s forwards;
+}
+
+@keyframes slide-up_join_form{
+    0%{
+        transform: translateY(300px);
+    }
+    100%{
+        transform: translateY(0);
+    }
+}
+
+.create_join_submit_button{
+    height: 40px;
+    width: 300px;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(to right,
+    rgb(255, 195, 110),
+    rgb(255, 146, 91));
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    &:hover{
+    background: linear-gradient(to right,
+    rgb(216, 165, 93),
+    rgb(203, 116, 72));
+    }
+}
+.cancel_button_create,.cancel_button_join{
+    margin-top: 20px;
+    background: #b2b2b2;
+    color: #000;
+    height: 40px;
+    width: 300px;
+    border: none;
+    border-radius: 50px;
+    font-size: 15px;
+    cursor: pointer;
+    &:hover{
+        background: #8a8a8a;
+    }
+}
+
+footer{
+    width: 100vw;
+    height: 7%;
+    border-top: 0.3px solid rgba(30, 30, 30, 0.34);
+    font-weight: bold;
+    text-align: end;
+}
