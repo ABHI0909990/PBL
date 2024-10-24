@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="create_join.css">
+    <title>VirtuaLearn</title>
+</head>
+<body>
+    <header>
+        <h1>VirtualLearn</h1>
+        <nav>
+            <ul class="Home_nav_Create_Join_nav">
+                <li class="Home_nav"><a href="#Home" id="defaultopen_create_join"><button>Home</button></a></li>
+                <li class="Help_nav"><a href="#Help"><button><span>?</span>&nbsp;Help</button></a></li>
+                <li class="Feed_Back_nav"><a href="#Feed_back"><button>Feed-Back</button></a></li>
+                <li class="More_nav"><a href="#More"><button>...</button></a></li>
+            </ul>
+        </nav>
+    </header>         
+    <hr>
+    <main>
+        <div class="More" id="More">
+            <ul>
+                <li>Sign-IN in another account</li>
+                <li>Log-IN in another account</li>
+            </ul>
+        </div>
+        <article class="Home" id="Home">
+            <section class="display_groups">
+                <h2>Your Groups</h2>
+                <div class="display" id="display">
+                    <% if (groups.length > 0) { %>
+                        <% groups.forEach(group => { %>
+                            <div class="group">
+                                <h3><%= group.groupname %></h3>
+                                <p>Leader: <%= group.leadername %></p>
+                                <p>Join Code: <%= group.join_code %></p>
+                                <a href="index1.html"><button>Go to Group</button></a>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p>You have not joined or created any groups yet.</p>
+                    <% } %>
+                </div>
+            </section>
+            <button class="create_join_button" id="create_join_button">+</button>
+            <section class="create_join_display" id="create_join_display">
+                <button class="Create_Group_Button_Home">Create Group</button>
+                <button class="Join_Group_Button_Home">Join Group</button>
+            </section>
+
+            <!-- Create form -->
+            <section class="Create_Group" id="Create_Group">
+                <form id="create_form" action="/create_group" method="POST">
+                    <label for="groupname">Group-Name:</label>
+                    <input type="text" id="group_name" name="groupname" placeholder="Enter the group name" required>
+                    <label for="leadername">Leader-name:</label>
+                    <input type="text" id="leadername" name="leadername" placeholder="Enter your name" required>
+                    <label for="emailid">Email:</label>
+                    <input type="email" id="email_id" name="email_id" placeholder="Enter your email" required>
+                    <button type="submit" class="create_join_submit_button" id="create">Create</button>
+                    <button type="reset" class="cancel_button_create">Reset</button>
+                </form>
+            </section>
+
+            <!-- Join form -->
+            <section class="Join_Group" id="Join_Group">
+                <form id="join_form" action="/join-group" method="POST">
+                    <label for="Joingroupname">Group-Name:</label>
+                    <input type="text" id="join_group" name="join_group" placeholder="Enter the group name" required>
+                    <label for="join_code">Group-code:</label>
+                    <input type="number" id="join_code" name="join_code" placeholder="Enter the group code" required>
+                    <button type="submit" class="create_join_submit_button">Join</button>
+                    <button type="reset" class="cancel_button_join">Reset</button>
+                </form>
+            </section>
+        </article>
+
+        <!-- Feedback and Help -->
+        <article class="Feed-Back" id="Feed_back">
+            <section>
+                Feed-Back
+                <label for="Fn">Name:</label>
+                <input type="text" id="Fn" placeholder="Enter your name">
+                <label for="Fr">Suggestion:</label>
+                <textarea id="Fr" placeholder="Write your suggestion" cols="10" rows="5"></textarea>
+            </section>
+        </article>
+        <article class="Help" id="Help">
+            <section>
+                Help Section
+            </section>
+        </article> 
+    </main>
+    <footer>
+        <p style="font-weight: bold;">&copy; VirtuaLearn</p>
+    </footer>
+
+    <script>
+        document.getElementById("defaultopen_create_join").click();
+
+        // Toggle display of create/join buttons
+        const circle_button = document.getElementById('create_join_button');
+        const hidden_create_join_buttons = document.getElementById('create_join_display');
+
+        circle_button.addEventListener('click', () => {
+            if (create_join_button.classList.contains('rotated_create_join_button')) {
+                circle_button.classList.toggle('rotated_create_join_button');
+                hidden_create_join_buttons.classList.toggle('show_create_join_buttons');
+            }else {
+                circle_button.classList.add('rotated_create_join_button');
+                hidden_create_join_buttons.classList.add('show_create_join_buttons');
+            }
+        });
+        const display = document.getElementById('display');
+        document.getElementById('create_form').addEventListener('submit', (event) => {
+            const groupName = document.getElementById('group_name').value.trim();
+            const leaderName = document.getElementById('leadername').value.trim();
+            if (!groupName || !leaderName) {
+                display.innerHTML = `<p style="color:red;">Please fill in all fields.</p>`;
+                return;
+            }
+            display.innerHTML = `
+                <div class="display_div">
+                    <h3>Group Created: ${groupName}</h3>
+                    <p>Leader: ${leaderName}</p>
+                    <a href="index1.html"><button>Go to Group</button></a>
+                </div>
+            `;
+        });
+        document.getElementById('join_form').addEventListener('submit', (event) => {
+            event.preventDefault();
+            const joinGroupName = document.getElementById('join_group').value.trim();
+            const joinGroupCode = document.getElementById('join_code').value.trim();
+            if (!joinGroupName || !joinGroupCode) {
+                display.innerHTML = `<p style="color:red;">Please fill in all fields.</p>`;
+                return;
+            }
+            display.innerHTML = `
+                <div class="display_div">
+                    <h3>Successfully joined group: ${joinGroupName}</h3>
+                    <a href="index1.html"><button>Go to Group</button></a>
+                </div>
+            `;
+        });
+        const Create_Group_Button_Home = document.querySelector(".Create_Group_Button_Home");
+        const Join_Group_Button_Home = document.querySelector(".Join_Group_Button_Home");
+        const Create_form = document.querySelector(".Create_Group");
+        const Join_form = document.querySelector(".Join_Group");
+        let cancel_create_form = document.querySelector(".cancel_button_create");
+        let cancel_join_form = document.querySelector(".cancel_button_join")
+        Create_Group_Button_Home.addEventListener("click", () => {
+            Create_form.classList.add("Create_form_display");
+            Join_form.classList.remove("Join_form_display");
+        });
+        Join_Group_Button_Home.addEventListener("click", () => {
+            Join_form.classList.add("Join_form_display");
+            Create_form.classList.remove("Create_form_display");
+        });
+        cancel_create_form.addEventListener("click", () => {
+            Create_form.classList.remove("Create_form_display"); 
+        });
+        cancel_join_form.addEventListener("click", () => {
+            Join_form.classList.remove("Join_form_display");
+        });
+    </script>
+</body>
+</html>
