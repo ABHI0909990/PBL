@@ -30,7 +30,7 @@
             <section class="display_groups">
                 <h2>Your Groups</h2>
                 <div class="display" id="display">
-                    <% if (groups.length > 0) { %>
+                    <% if (groups && groups.length > 0) { %>
                         <% groups.forEach(group => { %>
                             <div class="group">
                                 <h3><%= group.groupname %></h3>
@@ -43,7 +43,7 @@
                         <p>You have not joined or created any groups yet.</p>
                     <% } %>
                 </div>
-            </section>
+            </section>            
             <button class="create_join_button" id="create_join_button">+</button>
             <section class="create_join_display" id="create_join_display">
                 <button class="Create_Group_Button_Home">Create Group</button>
@@ -54,7 +54,7 @@
             <section class="Create_Group" id="Create_Group">
                 <form id="create_form" action="/create_group" method="POST">
                     <label for="groupname">Group-Name:</label>
-                    <input type="text" id="group_name" name="groupname" placeholder="Enter the group name" required>
+                    <input type="text" id="groupname" name="groupname" placeholder="Enter the group name" required>
                     <label for="leadername">Leader-name:</label>
                     <input type="text" id="leadername" name="leadername" placeholder="Enter your name" required>
                     <label for="emailid">Email:</label>
@@ -67,8 +67,10 @@
             <!-- Join form -->
             <section class="Join_Group" id="Join_Group">
                 <form id="join_form" action="/join-group" method="POST">
-                    <label for="Joingroupname">Group-Name:</label>
-                    <input type="text" id="join_group" name="join_group" placeholder="Enter the group name" required>
+                    <label for="group_name">Group-Name:</label>
+                    <input type="text" id="group_name" name="groupname" placeholder="Enter the group name" required>
+                    <label for="membername">Member-name:</label>
+                    <input type="text" id="membername" name="membername" placeholder="Enter your name" required>
                     <label for="join_code">Group-code:</label>
                     <input type="number" id="join_code" name="join_code" placeholder="Enter the group code" required>
                     <button type="submit" class="create_join_submit_button">Join</button>
@@ -115,7 +117,7 @@
         });
         const display = document.getElementById('display');
         document.getElementById('create_form').addEventListener('submit', (event) => {
-            const groupName = document.getElementById('group_name').value.trim();
+            const groupName = document.getElementById('groupname').value.trim();
             const leaderName = document.getElementById('leadername').value.trim();
             if (!groupName || !leaderName) {
                 display.innerHTML = `<p style="color:red;">Please fill in all fields.</p>`;
@@ -131,14 +133,16 @@
         });
         document.getElementById('join_form').addEventListener('submit', (event) => {
             event.preventDefault();
-            const joinGroupName = document.getElementById('join_group').value.trim();
+            const joinGroupName = document.getElementById('group_name').value.trim();
             const joinGroupCode = document.getElementById('join_code').value.trim();
-            if (!joinGroupName || !joinGroupCode) {
+            const MemberName = document.getElementById('membername').value.trim();
+            if (!joinGroupName || !joinGroupCode || !MemberName ) {
                 display.innerHTML = `<p style="color:red;">Please fill in all fields.</p>`;
                 return;
             }
             display.innerHTML = `
                 <div class="display_div">
+                    <p>Member: ${MemberName}</p>
                     <h3>Successfully joined group: ${joinGroupName}</h3>
                     <a href="index1.html"><button>Go to Group</button></a>
                 </div>
