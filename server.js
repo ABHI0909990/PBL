@@ -8,7 +8,6 @@ const path = require('path');
 const crypto = require('crypto');
 const session = require('express-session');
 
-
 const port = 3300;  
 
 const app = express();
@@ -26,7 +25,6 @@ app.use(session({
     cookie: { secure: false } 
 }));
 
-
 const mongoURI = 'mongodb://localhost:27017/Virual_Learn';
 
 mongoose.connect(mongoURI, {
@@ -43,12 +41,14 @@ db.once('open', () => {
 db.on('error', (err) => {
     console.error('Mongoose connection error:', err);
 });
+
 let gfs;
 db.once('open', () => {
     gfs = Grid(db.db, mongoose.mongo);
     gfs.collection('pdfs'); 
 });
 
+// Set up GridFS storage for PDF uploads
 const storage = new GridFsStorage({
     url: mongoURI,
     file: (req, file) => {
@@ -70,6 +70,7 @@ const storage = new GridFsStorage({
 
 const upload = multer({ storage });
 
+// User schema
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email_id: { type: String, required: true, unique: true },
@@ -78,17 +79,18 @@ const userSchema = new mongoose.Schema({
 
 const Users = mongoose.model("User", userSchema);
 
+// Group schema
 const GroupSchema = new mongoose.Schema({
     groupname: {
         type: String,
         required: true,
         unique: true, 
     },
-    join_group: {
+    leadername: {
         type: String,
-        unique: true, 
+        required: true, 
+        unique: true,
     },
-    leaderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     join_code: {
         type: String, 
         required: true,
@@ -99,16 +101,33 @@ const GroupSchema = new mongoose.Schema({
         default: Date.now,
     },
     members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+
 });
+
 const Group = mongoose.model('groups', GroupSchema);
 
+// PDF schema
 const pdfSchema = new mongoose.Schema({
-    pdfFile: { type: String, required: true }
+    pdfFile: { type: String, required: true },
+    title: { type: String, required: true }, 
+    groupId: { type: mongoose.Schema.Types.ObjectId, ref: 'groups' },
 });
 const PdfSchema = mongoose.model("PdfDetails", pdfSchema);
 
+// Routes
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'LogIN_&_SignIN.html'));
+});
+
+app.get('/home', async (req, res) => {
+    try {
+        const userId = req.session.userId; 
+        const groups = await Group.find({ members: userId }); 
+        res.render('home', { groups });
+    } catch (error) {
+        console.error("Error retrieving groups:", error);
+        res.status(500).json({ error: 'Error Home page' });
+    }
 });
 
 app.post('/register', async (req, res) => {
@@ -144,7 +163,6 @@ app.post('/login', async (req, res) => {
         }
 
         if (user.pass_word === pass_word) {
-
             const groups = await Group.find({
                 $or: [{ members: user._id }, { leadername: user.name }]
             });
@@ -179,117 +197,117 @@ app.post('/create_group', async (req, res) => {
         if (existingGroup) {
             return res.status(400).json({ error: 'Group name already exists' });
         }
-        const leader = await Users.findOne({ email_id: email_id });
-        // if (!leader) {
-        //     return res.status(404).json({ error: 'Leader not found' });
-        // }
+        const leader = await Users.findOne({ name: leadername });
+        if (!leader) {
+            return res.status(404).json({ error: 'Leader not found' });
+        }
         const newGroup = new Group({
             groupname,
             leadername: leader.name,  
             join_code: joinCode,
             members: [leader._id]  
         });
-        const group = await newGroup.save();  
-
+        await newGroup.save();  
+        console.log("New Group ID:", newGroup._id);
         const updatedGroups = await Group.find({
             $or: [{ members: leader._id }, { leadername: leader.name }]
         });
-
         res.render('create_join', { groups: updatedGroups });
-        res.status(201).json({ message: 'Group created successfully', group });
     } catch (error) {
         console.error("Error creating group:", error);
         res.status(500).json({ error: 'Error creating group' });
     }
 });
 
-
 app.post('/join-group', async (req, res) => {
-    const { join_group, join_code, email_id } = req.body;
+    const { groupname, join_code, membername } = req.body;
 
-    if (!join_group || !join_code) {
+    if (!groupname || !join_code || !membername) {
         return res.status(400).json({ error: 'All fields are required' });
     }
     try {
-        const group = await Group.findOne({ groupname: join_group, join_code });  
+        const user = await Users.findOne({ name: membername }); 
+        const group = await Group.findOne({ groupname: groupname, join_code });  
         if (!group) {
             return res.status(404).json({ error: 'Group not found' });
         }
-        const user = await Users.findOne({ members: user._id });
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-
-        if (!group.members.includes(user._id)) {
-            group.members.push(user._id);
+        const isMember = group.members.includes(user._id); 
+        if (!isMember) {
+            group.members.push(user._id);  
             await group.save();
         }
-        const updatedGroup = await Group.findById(group._id).populate('members');   
-
+        
         const updatedGroups = await Group.find({
-            $or: [{ members: user._id }, { leadername: user.name }]
-        });
-
+            $or: [{ members: user._id }, { leadername: membername }] 
+        })
         res.render('create_join', { groups: updatedGroups }); 
-
     } catch (error) {
         console.error("Error joining group:", error);
         res.status(500).json({ error: 'Error joining group' });
     }
 });
-
 app.post('/upload', upload.single('pdf'), async (req, res) => {
     const pdfFile = req.file.filename;
+    const pdfTitle = req.body.pdfTitle;
     try {
-        await PdfSchema.create({ pdfFile });
-        res.send({ status: "Ok", filename: req.file.filename });
+        const pdfDetails = new PdfSchema({ pdfFile, title: pdfTitle });
+        await pdfDetails.save();
+        res.redirect('/pdfs'); 
     } catch (error) {
         res.status(500).json({ status: error.message });
     }
 });
 
-app.get('/pdfs', (req, res) => {
-    gfs.files.find().toArray((err, files) => {
-        if (!files || files.length === 0) {
-            return res.json([]);
-        }
-        const fileIds = files.map(file => file?._id);
-        res.json(fileIds);
-    });
+
+app.get('/pdfs', async (req, res) => {
+    try {
+        const pdfs = await PdfSchema.find();
+        res.json(pdfs); 
+    } catch (error) {
+        console.error("Error retrieving PDFs:", error);
+        res.status(500).json({ error: 'Error retrieving PDFs' });
+    }
 });
 
 app.get('/pdf/:id', (req, res) => {
-    gfs.files.findOne({ _id: mongoose.Types.ObjectId(req.params.id) }, (err, file) => {
+    const pdfId = req.params.id;
+
+    gfs.files.findOne({ _id: mongoose.Types.ObjectId(pdfId) }, (err, file) => {
         if (err || !file) {
+            console.error('File not found:', err);
             return res.status(404).json({ err: 'No file exists' });
         }
         const readstream = gfs.createReadStream(file.filename);
-        readstream.pipe(res);
+        res.set('Content-Type', 'application/pdf');
+        readstream.pipe(res).on('error', (readErr) => {
+            console.error('Error reading the stream:', readErr);
+            res.status(500).json({ err: 'Error reading file' });
+        });
     });
 });
 
-app.delete('/pdf/:id', async (req, res) => {
-    try {
-        const pdf = await PdfSchema.findById(req.params.id); 
-        if (!pdf) return res.status(404).json({ success: false, message: 'PDF not found' });
 
-        gfs.remove({ _id: pdf.file_id, root: 'pdfs' }, (err) => {
-            if (err) {
-                return res.status(404).json({ success: false, message: 'Error deleting file' });
-            }
-
-            PdfSchema.findByIdAndDelete(req.params.id, (err) => {
-                if (err) return res.status(500).json({ success: false });
-                res.json({ success: true });
-            });
-        });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
-});
+// app.delete('/pdf/:id', async (req, res) => {
+//     try {
+//         const pdf = await PdfSchema.findById(req.params.id); 
+//         if (!pdf) return res.status(404).json({ success: false, message: 'PDF not found' });
+//         gfs.remove({ _id: pdf._id, root: 'pdfs' }, (err) => {
+//             if (err) {
+//                 return res.status(404).json({ success: false, message: 'Error deleting file' });
+//             }
+//             PdfSchema.findByIdAndDelete(req.params.id, (err) => {
+//                 if (err) return res.status(500).json({ success: false });
+//                 res.json({ success: true });
+//             });
+//         });
+//     } catch (error) {
+//         res.status(500).json({ success: false, message: error.message });
+//     }
+// });
 
 app.listen(port, () => {
     console.log(`Server started on port ${port}`);
 });
+
 mongoose.set('debug', true);
 
