@@ -11,6 +11,8 @@ body {
 }
 
 header {
+    display: flex;
+    flex-direction: row;
     background: #000000;
     color: white;
     padding: 3px;
@@ -18,29 +20,21 @@ header {
     height: 16%;
 }
 #title_head{
-    padding-top: 3px;
+    padding-top: 26px;
     padding-bottom: 2px;
 }
-.def_navbar{
-    /* border: 2px solid red; */
-    padding: 7px;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    margin-left: 29px;
-    margin-right:29px;
-    font-size: larger;
-    font-weight: 1000;
-    background-color: rgba(253, 183, 54, 0.81);
-    border-radius: 5px;
-    border-bottom-left-radius: 0px ;
-    border-bottom-right-radius: 0px ;
-}
-.def_navbar:hover{
-    background-color: rgba(255, 174, 24, 0.875);
+nav{  
+    position: relative;
+    height: 30%;
+    width: 60%;
+    top: 70%;
+    left: 38%;
+    width: 44%;
+    background: linear-gradient(to right,#000,#222222 );
 }
 nav ul {
     list-style-type: none;
     padding: 0;
-    margin-top: 23px;
 }
 
 nav ul li {
@@ -51,6 +45,10 @@ nav ul li {
 nav ul li a {
     color: white;
     text-decoration: none;
+    transition: all 0.7s linear;
+    &:hover{
+        text-decoration: underline;
+    }
 }
 
 .page {
@@ -59,8 +57,9 @@ nav ul li a {
 }
 
 main{
-    height: 82%;
+    height: 84%;
     width: 100%;
+    z-index: 1;
 }
 #uploadPdfBtn {
     position: fixed;
@@ -75,9 +74,19 @@ main{
     border: none;
     cursor: pointer;
     z-index: 1000; 
-    margin-top: 43%;
+    margin-top: 39%;
     display: none;
 }
 #pdfUploadForm {
     margin-top: 20px;
+}
+#pdfViewer {
+    border: 1px solid #ccc;
+    margin-top: 20px;
+    display: none;  
+    padding: 10px;
+}
+
+iframe {
+    border: none; 
 }
