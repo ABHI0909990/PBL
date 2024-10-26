@@ -304,6 +304,31 @@ app.get('/pdf/:id', (req, res) => {
 //         res.status(500).json({ success: false, message: error.message });
 //     }
 // });
+app.get('/pdf/:id', (req, res) => {
+    const pdfId = req.params.id;
+    const download = req.query.download === 'true';
+
+    gfs.files.findOne({ _id: mongoose.Types.ObjectId(pdfId) }, (err, file) => {
+        if (err || !file) {
+            console.error('File not found:', err);
+            return res.status(404).json({ err: 'No file exists' });
+        }
+
+        const readstream = gfs.createReadStream(file.filename);
+        if (download) {
+            res.setHeader('Content-Disposition', `attachment; filename="${file.filename}"`);
+        } else {
+            res.setHeader('Content-Type', 'application/pdf');
+        }
+
+        readstream.pipe(res).on('error', (readErr) => {
+            console.error('Error reading the stream:', readErr);
+            res.status(500).json({ err: 'Error reading file' });
+        });
+    });
+});
+
+
 
 app.listen(port, () => {
     console.log(`Server started on port ${port}`);
