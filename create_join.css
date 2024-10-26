@@ -1,68 +1,82 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #e0f7fa, #ffffff);
+    color: #333;
+}
 *{
     margin: 0px;
     padding: 0px;;
 }
 header{
-    height: 15vh;
-    width: 100vw;
+    background-color: #f3812f;
+    color: white;
+    padding: 1rem;
     text-align: center;
-    background: #333;
+    font-size: 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 header h1{
     text-decoration: underline;
     font-weight: bolder;
     color: rgb(255, 255, 255);
 }
-nav{
+nav ul {
+    list-style-type: none;
     display: flex;
-    flex-direction: row;
-    height: 6vh;
-    width: 100%;
-    border-right: 2px solid black;
-}
-nav ul{
-    display: flex;
-    align-items: center;
     justify-content: center;
-    flex-direction: row; 
-    height: 100%;
-    width: 95%;
-    padding-left: 50px;
-    font-size: 15px;
-}
-nav ul li{
-    height: 30px;
-    width: 100px;
-    list-style: none;
-    text-align: center;
-    padding: 1px;
-    margin: 10px;
-    transition: all 0.5s ease-in-out;
-    
-}
-nav ul li button{
-    height: 100%;
-    width: 100%;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-weight: bolder;
-    font-size: 15px;
-    color: white;
-    &:hover{
-        text-decoration: underline;
-    }
-}
-hr{
-    left: 7%;
-    width: 86%;
 }
 
-main{
-    display: flex;
-    flex-direction: row;
-    width: 100vw;
-    height: 78vh;
+nav ul li {
+    margin: 0 1rem;
+}
+
+nav ul li a button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+nav ul li a button:hover {
+    color: #81d4fa;
+}
+
+/* Main Content */
+main {
+    padding: 2rem;
+}
+
+.display_groups h2 {
+    color: #000000;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.display {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.group {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.group h3 {
+    color: #f3812f;
+    margin: 0;
+}
+
+.group p {
+    margin: 0.5rem 0;
 }
 .More{
     display: none;
